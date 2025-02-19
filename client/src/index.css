@@ -77,7 +77,7 @@ body {
   position: relative;
 }
 
-#login-form > button {
+#login-form > button{
   display: flex;
   flex: content;
   justify-content: center;
@@ -145,4 +145,54 @@ body {
 
 #xOAuth > #xIcon{
  font-size: 19px;
+}
+
+/* Signup page */
+#Cacc {
+  width: 280px;
+  height: 30px;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  background-color: #2F008099;
+  color: #fff;
+  padding: 25px 20px;
+  border-radius: 2px;
+  margin-top: 15px;
+}
+
+.container {
+  width: 280px;
+  justify-items: center;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+#username, #firstName, #lastName, #password, #email {
+  display: flex;
+  flex: content;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 15px;
+  border: 1px solid #000;
+  border-radius: 2px;
+  margin-top: 22px;
+  font-size: 16px;
+}
+
+input::placeholder {
+  color: #000;
+}
+
+#signup {
+  background-color: #2F0080;
+  color: #fff;
+  border-radius: 2px;
+  padding: 8px 30px;
+  margin: 18px 0px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 550;
+  cursor: pointer;
 }

@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/rksvw/thisporlio#readme",
   "dependencies": {
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mysql": "^2.18.1"
   }
