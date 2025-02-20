@@ -1,6 +1,7 @@
 const express = require('express');
 const {db} = require('./db/sql')
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const userRoutes = require('./routes/user.route');
 const app = express();
 
@@ -9,6 +10,7 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(express.json());
 app.use("/api/user", userRoutes);
+app.use(cors());
 
 app.get('/', (req, res) => {
     res.send(`<h1>Hello World!</h1>`);

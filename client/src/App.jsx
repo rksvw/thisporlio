@@ -4,7 +4,6 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 
 function App() {
-  console.log('hello');
   return (
     <>
       <BrowserRouter>
