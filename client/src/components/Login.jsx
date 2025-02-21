@@ -3,8 +3,12 @@ import { MdOutlinePassword } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
 import { BsTwitterX } from "react-icons/bs";
 import { useState } from "react";
+import {app} from "../firebase";
+import {GoogleAuthProvider, signInWithPopup, getAuth} from "firebase/auth";
+import { Navigate } from "react-router-dom";
 
 export default function Login() {
+  const auth = getAuth(app);
   const [formData, setFormData] = useState({});
 
   const handleChange = (e) => {
@@ -39,6 +43,35 @@ export default function Login() {
       console.log("Facing Render Error: ", err.message);
     }
   };
+
+  const handleXClick = () => {}
+
+  const handleGoogleClick =  async() => {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({prompt: "select_account"});
+    try {
+      const resultFromGoogle = await signInWithPopup(auth, provider);
+      const res = await fetch("/api/user/google", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: resultFromGoogle.user.displayName,
+          email: resultFromGoogle.user.email,
+          googlePhotoUrl: resultFromGoogle.user.photoURL,
+          id: resultFromGoogle.user.uid,
+        })
+      })
+      const data = await res.json();
+      if (res.ok) {
+        Navigate("/");
+      }
+    } catch (error) {
+      console.log("A Big error",error.message)
+    }
+  }
+
   return (
     <>
       <div className="flex flex-col items-center justify-center w-[280px]">
@@ -94,11 +127,11 @@ export default function Login() {
             Login
           </button>
         </form>
-        <button id="gglOAuth">
+        <button id="gglOAuth" type="button" onClick={handleGoogleClick}>
           <FcGoogle id="gglIcon" />
           <p>Sign in with Google</p>
         </button>
-        <button id="xOAuth">
+        <button id="xOAuth" type="button" onClick={handleXClick}>
           <BsTwitterX id="xIcon" />
           <p>Sign in with X (Twitter)</p>
         </button>
