@@ -3,13 +3,14 @@ import { MdOutlinePassword } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
 import { BsTwitterX } from "react-icons/bs";
 import { useState } from "react";
-import {app} from "../firebase";
-import {GoogleAuthProvider, signInWithPopup, getAuth} from "firebase/auth";
-import { Navigate } from "react-router-dom";
+import { app } from "../firebase";
+import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const auth = getAuth(app);
   const [formData, setFormData] = useState({});
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
@@ -19,7 +20,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.email ===  "" || formData.password === "") {
+    if (formData.email === "" || formData.password === "") {
       console.log("Please fill out all required fields");
       return;
     }
@@ -44,33 +45,32 @@ export default function Login() {
     }
   };
 
-  const handleXClick = () => {}
+  const handleXClick = () => {};
 
-  const handleGoogleClick =  async() => {
+  const handleGoogleClick = async () => {
     const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({prompt: "select_account"});
+    provider.setCustomParameters({ prompt: "select_account" });
     try {
       const resultFromGoogle = await signInWithPopup(auth, provider);
       const res = await fetch("/api/user/google", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          name: resultFromGoogle.user.displayName,
+          fullname: resultFromGoogle.user.displayName,
           email: resultFromGoogle.user.email,
           googlePhotoUrl: resultFromGoogle.user.photoURL,
-          id: resultFromGoogle.user.uid,
-        })
-      })
+        }),
+      });
       const data = await res.json();
       if (res.ok) {
-        Navigate("/");
+        navigate("/");
       }
     } catch (error) {
-      console.log("A Big error",error.message)
+      console.log("A Big error", error.message);
     }
-  }
+  };
 
   return (
     <>

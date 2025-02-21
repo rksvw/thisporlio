@@ -2,9 +2,36 @@ const { db } = require("../db/sql");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
+async function google(req, res) {
+  const { fullname, email, googlePhotoUrl } = req.body;
+  const isAdmin = false;
+  const generatePassword =
+    Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+  const hashPassword = await bcrypt.hash(generatePassword, saltRounds);
+  const username =
+    fullname.split(" ")[0] + Math.floor(Math.random()*(999-100+1)+100);;
+  try {
+    db.query(
+      "INSERT INTO access_user ( fullname, username, email, password, isAdmin, profile_picture) VALUE (?, ?, ?, ?, ?, ? )",
+      [fullname, username, email, hashPassword, isAdmin, googlePhotoUrl],
+      (err, result) => {
+        if (err) {
+          console.log("Error executing query: ", err.stack);
+          res.status(400).send("Error creating user");
+          return;
+        }
+        res.status(201).send("User created successfully");
+      }
+    );
+  } catch (error) {
+    console.log("A big google error: ", error.message);
+  }
+}
+
 // Create a new user
 async function signup(req, res) {
-  const profile_picture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+  const profile_picture =
+    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
   const isAdmin = false;
   const password = req.body.password;
   const encryptedPassword = await bcrypt.hash(password, saltRounds);
@@ -75,4 +102,5 @@ async function signin(req, res) {
 module.exports = {
   signup,
   signin,
+  google,
 };
