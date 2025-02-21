@@ -4,14 +4,15 @@ const saltRounds = 10;
 
 // Create a new user
 async function signup(req, res) {
-  console.log(req.body);
+  const profile_picture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+  const isAdmin = false;
   const password = req.body.password;
   const encryptedPassword = await bcrypt.hash(password, saltRounds);
 
-  const { firstName, lastName, email, username } = req.body;
+  const { fullname, username, email } = req.body;
   db.query(
-    "INSERT INTO usersdata (firstName, lastName, email, password, username) VALUE (?, ?, ? , ? ,? )",
-    [firstName, lastName, email, encryptedPassword, username],
+    "INSERT INTO access_user (fullname, username, email, password, isAdmin, profile_picture) VALUE ( ?, ?, ?, ?, ?, ?)",
+    [fullname, username, email, encryptedPassword, isAdmin, profile_picture],
     (err, result) => {
       if (err) {
         console.log("Error executing query: ", err.stack);
@@ -27,7 +28,7 @@ async function signin(req, res) {
   const { email, password } = req.body;
   if (email !== "" && password !== "") {
     db.query(
-      "SELECT password FROM usersdata WHERE email = ?",
+      "SELECT password FROM access_user WHERE email = ?",
       [email],
       async function (error, results, fields) {
         if (error) {

@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/users', (req, res) => {
-    db.query('SELECT * FROM usersdata', (err, result) => {
+    db.query('SELECT * FROM access_user', (err, result) => {
         if (err) {
             console.log('Error executing query: ', err.stack);
             res.status(500).send('Error fetching users');
