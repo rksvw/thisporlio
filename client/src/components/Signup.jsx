@@ -12,11 +12,11 @@ function Signup() {
     e.preventDefault();
     if (
       !formData.username ||
-      !formData.firstName ||
+      !formData.fullname ||
       !formData.email ||
       !formData.password
     ) {
-      console.log("Plese fill out all fields");
+      console.log("Please fill out all fields");
     }
     try {
       const res = await fetch("/api/user/signup", {
@@ -54,19 +54,10 @@ function Signup() {
         <div className="container">
           <input
             type="text"
-            name="firstName"
-            id="firstName"
+            name="fullname"
+            id="fullname"
             onChange={handleChange}
-            placeholder="Enter your first Name"
-          />
-        </div>
-        <div className="container">
-          <input
-            type="text"
-            name="lastName"
-            id="lastName"
-            onChange={handleChange}
-            placeholder="Enter your last Name"
+            placeholder="Your name"
           />
         </div>
         <div className="container">
@@ -75,7 +66,7 @@ function Signup() {
             name="username"
             id="username"
             onChange={handleChange}
-            placeholder="Enter your unique username"
+            placeholder="Your username"
           />
         </div>
         <div className="container">
@@ -84,7 +75,7 @@ function Signup() {
             name="email"
             id="email"
             onChange={handleChange}
-            placeholder="Enter your email"
+            placeholder="example@gmail.com"
           />
         </div>
         <div className="container">
@@ -93,7 +84,7 @@ function Signup() {
             name="password"
             id="password"
             onChange={handleChange}
-            placeholder="Password"
+            placeholder="********"
           />
         </div>
 

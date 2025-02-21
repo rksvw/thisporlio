@@ -2,8 +2,43 @@ import { IoMdPerson } from "react-icons/io";
 import { MdOutlinePassword } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
 import { BsTwitterX } from "react-icons/bs";
+import { useState } from "react";
 
 export default function Login() {
+  const [formData, setFormData] = useState({});
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+    console.log(formData);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (formData.email ===  "" || formData.password === "") {
+      console.log("Please fill out all required fields");
+      return;
+    }
+    try {
+      const res = await fetch("/api/user/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (data.success === false) {
+        console.log("Data is not successed");
+      }
+      if (data.ok) {
+        console.log(data);
+      }
+    } catch (err) {
+      console.log("Facing Render Error: ", err.message);
+    }
+  };
   return (
     <>
       <div className="flex flex-col items-center justify-center w-[280px]">
@@ -16,16 +51,18 @@ export default function Login() {
         <p className="flex justify-center" id="Nacc">
           Don't have account? <span>Sign up</span>
         </p>
-        <div
+        <form
           id="login-form"
+          onSubmit={handleSubmit}
           className="flex flex-col items-center justify-center"
         >
           <IoMdPerson id="person-icon" />
           <input
-            type="text"
-            name="username"
-            id="uname"
-            placeholder="Username / email"
+            type="email"
+            name="email"
+            id="email"
+            placeholder="email"
+            onChange={handleChange}
             className="w-[280px] flex text-xl h-[39px]"
           />
 
@@ -33,8 +70,9 @@ export default function Login() {
           <input
             type="password"
             name="password"
-            id="upass"
+            id="password"
             placeholder="Password"
+            onChange={handleChange}
             className="w-[280px] flex text-xl h-[39px]"
           />
           <div className="flex items-center justify-between w-[280px] text-[12px]">
@@ -48,10 +86,14 @@ export default function Login() {
               <a href="#">Forgotten password?</a>
             </div>
           </div>
-          <button type="submit" id="login" className="w-[158px] h-[39px] cursor-pointer">
+          <button
+            type="submit"
+            id="login"
+            className="w-[158px] h-[39px] cursor-pointer"
+          >
             Login
           </button>
-        </div>
+        </form>
         <button id="gglOAuth">
           <FcGoogle id="gglIcon" />
           <p>Sign in with Google</p>

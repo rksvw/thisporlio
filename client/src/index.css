@@ -169,7 +169,7 @@ body {
   text-align: center;
 }
 
-#username, #firstName, #lastName, #password, #email {
+#username, #fullname, #password, #email {
   display: flex;
   flex: content;
   justify-content: center;
