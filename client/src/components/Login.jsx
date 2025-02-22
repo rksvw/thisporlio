@@ -1,14 +1,11 @@
 import { IoMdPerson } from "react-icons/io";
 import { MdOutlinePassword } from "react-icons/md";
-import { FcGoogle } from "react-icons/fc";
-import { BsTwitterX } from "react-icons/bs";
 import { useState } from "react";
-import { app } from "../firebase";
-import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import Google from "./Google";
 
 export default function Login() {
-  const auth = getAuth(app);
+
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
 
@@ -45,33 +42,6 @@ export default function Login() {
     }
   };
 
-  const handleXClick = () => {};
-
-  const handleGoogleClick = async () => {
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: "select_account" });
-    try {
-      const resultFromGoogle = await signInWithPopup(auth, provider);
-      const res = await fetch("/api/user/google", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          fullname: resultFromGoogle.user.displayName,
-          email: resultFromGoogle.user.email,
-          googlePhotoUrl: resultFromGoogle.user.photoURL,
-        }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        navigate("/");
-      }
-    } catch (error) {
-      console.log("A Big error", error.message);
-    }
-  };
-
   return (
     <>
       <div className="flex flex-col items-center justify-center w-[280px]">
@@ -82,7 +52,11 @@ export default function Login() {
           Login to your account
         </h1>
         <p className="flex justify-center" id="Nacc">
-          Don't have account? <span>Sign up</span>
+          Don't have account?{" "}
+          <span>
+            {" "}
+            <Link to={"/signup"}>Sign up</Link>
+          </span>
         </p>
         <form
           id="login-form"
@@ -116,7 +90,7 @@ export default function Login() {
               </label>
             </div>
             <div className="flex" id="repass">
-              <a href="#">Forgotten password?</a>
+              <Link to="/fgquiz">Forgotten password?</Link>
             </div>
           </div>
           <button
@@ -127,14 +101,7 @@ export default function Login() {
             Login
           </button>
         </form>
-        <button id="gglOAuth" type="button" onClick={handleGoogleClick}>
-          <FcGoogle id="gglIcon" />
-          <p>Sign in with Google</p>
-        </button>
-        <button id="xOAuth" type="button" onClick={handleXClick}>
-          <BsTwitterX id="xIcon" />
-          <p>Sign in with X (Twitter)</p>
-        </button>
+        <Google />
       </div>
     </>
   );

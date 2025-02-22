@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import {Link} from "react-router-dom";
+import Google from "./Google";
 
 function Signup() {
   const [formData, setFormData] = useState({});
@@ -47,8 +49,8 @@ function Signup() {
           <h1 className="flex justify-center items-center" id="Cacc">
             Create new account
           </h1>
-          <p>
-            Have an account? <span>Login</span>
+          <p id="Log">
+            Have an account? <span> <Link to={"/login"}> Login</Link></span>
           </p>
         </div>
         <div className="container">
@@ -91,6 +93,7 @@ function Signup() {
         <button type="submit" id="signup">
           Sign up
         </button>
+        <Google />
       </form>
     </>
   );

@@ -9,7 +9,7 @@ async function google(req, res) {
     Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
   const hashPassword = await bcrypt.hash(generatePassword, saltRounds);
   const username =
-    fullname.split(" ")[0] + Math.floor(Math.random()*(999-100+1)+100);;
+    fullname.split(" ")[0] + Math.floor(Math.random() * (999 - 100 + 1) + 100);
   try {
     db.query(
       "INSERT INTO access_user ( fullname, username, email, password, isAdmin, profile_picture) VALUE (?, ?, ?, ?, ?, ? )",
@@ -49,6 +49,26 @@ async function signup(req, res) {
       res.status(201).send("User created successfully");
     }
   );
+}
+
+async function forgotPass(req, res) {
+  const {newPassword,email} = req.body;
+  const hashPassword = await bcrypt.hash(newPassword, saltRounds);
+  try {
+    db.query("UPDATE access_user SET password = ? WHERE email = ?",[hashPassword, email], function (err, results) {
+      if (err) {
+        res.send({
+          code: 400,
+          failed: "error occured",
+          err: err
+        });
+      } else {
+        res.status(201).send("User password updated successfully");
+      }
+    })
+  } catch (error) {
+    console.log("A big forgotPass error: ", error.message);
+  }
 }
 
 async function signin(req, res) {
@@ -103,4 +123,5 @@ module.exports = {
   signup,
   signin,
   google,
+  forgotPass
 };
