@@ -4,12 +4,16 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import Quiz from "./components/Quiz";
 import ForgotPass from "./components/ForgotPass";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <div className="flex flex-col text-center items-center justify-center w-[440px] card">
+          <Routes>
+            <Route path="/profile" element={<ProfilePage />} />
+          </Routes>
           <Routes>
             <Route path="/fgpass" element={<ForgotPass />} />
           </Routes>
