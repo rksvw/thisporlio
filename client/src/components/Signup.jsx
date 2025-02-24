@@ -41,6 +41,8 @@ function Signup() {
   };
   return (
     <>
+            <div className="flex flex-col text-center items-center justify-center w-[440px] card">
+
       <form onSubmit={handleSubmit}>
         <div
           className="flex flex-col justify-center items-center text-center w-[280px]"
@@ -95,6 +97,7 @@ function Signup() {
         </button>
         <Google />
       </form>
+      </div>
     </>
   );
 }

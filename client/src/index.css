@@ -335,4 +335,44 @@ input::placeholder {
 }
 
 .ldvioclr {
+  border: none !important;
+  color: white !important;
+  padding: 15px 50px !important;
+  border-radius: 3px !important;
+  font-size: 18px !important;
+}
+
+.ldvioclr::placeholder {
+  color: white;
+}
+
+#pIcon {
+  position: absolute;
+}
+
+.inputContainer > .pIcon {
+  top: 40px;
+  left: 15px;
+  font-size: 24px;
+}
+
+.inputContainer > button {
+  color: #fff;
+  font-weight: 900;
+  border-radius: 50px;
+  text-transform: uppercase;
+  font-size: 16px;
+  margin: 25px auto;
+  cursor: pointer;
+}
+
+.inputContainer > button .pIcon {
+  left: 130px;
+  top: 8px;
+  font-size: 24px;
+}
+
+.inputContainer > #pSignOut {
+  margin-top: 0px;
+  margin-bottom: 50px;
 }

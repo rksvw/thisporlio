@@ -5,7 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Google from "./Google";
 
 export default function Login() {
-
+  const [userData, setUserData] = useState({});
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
 
@@ -13,6 +13,10 @@ export default function Login() {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
     console.log(formData);
   };
+
+  const handleUser = async (data) => {
+    localStorage.setItem("userData",JSON.stringify({data}));
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,11 +35,13 @@ export default function Login() {
       });
 
       const data = await res.json();
-      if (data.success === false) {
+      if (res.success === false) {
         console.log("Data is not successed");
       }
-      if (data.ok) {
-        console.log(data);
+      if (res.ok) {
+        await handleUser(data)
+        navigate("/profile");
+        // this.setState(userData);
       }
     } catch (err) {
       console.log("Facing Render Error: ", err.message);
@@ -44,6 +50,8 @@ export default function Login() {
 
   return (
     <>
+            <div className="flex flex-col text-center items-center justify-center w-[440px] card">
+
       <div className="flex flex-col items-center justify-center w-[280px]">
         <h1
           className="flex flex-col items-center justify-center text-[20px] font-bold bg-[#2F008099] w-[280px] h-[50px] text-[#fff]"
@@ -102,6 +110,7 @@ export default function Login() {
           </button>
         </form>
         <Google />
+      </div>
       </div>
     </>
   );

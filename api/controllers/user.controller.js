@@ -2,6 +2,35 @@ const { db } = require("../db/sql");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
+async function login (req, res) {
+  const {email, password} = req.body;
+
+  if (!email || !password || email === "" || password === "") {
+    res.status(400).send("All fields are required");
+    return;
+  }
+  try {
+    const validUser = db.query("SELECT * FROM access_user WHERE email = ?", [email], async (err, results, fields) => {
+      if (err) {
+        console.log("Error executin query: ", err.stack);
+        res.status(400).send("Invalid User");
+        return;
+      }
+      console.log(results);
+    });
+
+    if (!validUser) {
+      res.status(400, "User not found");
+      return;
+    }
+
+    const validPassword = bcrypt.compareSync(password, validUser.password)
+  } catch(err) {
+    console.log("A very big error here I got!");
+  }
+
+}
+
 async function google(req, res) {
   const { fullname, email, googlePhotoUrl } = req.body;
   const isAdmin = false;
@@ -75,7 +104,7 @@ async function signin(req, res) {
   const { email, password } = req.body;
   if (email !== "" && password !== "") {
     db.query(
-      "SELECT password FROM access_user WHERE email = ?",
+      "SELECT * FROM access_user WHERE email = ?",
       [email],
       async function (error, results, fields) {
         if (error) {
@@ -90,13 +119,17 @@ async function signin(req, res) {
               password,
               results[0].password
             );
-
             if (comparison) {
               res.send({
                 code: 200,
                 success: "login successful",
                 id: results[0].id,
                 username: results[0].username,
+                email: results[0].email,
+                profile_picture: results[0].profile_picture,
+                timeStamp: results[0].timestamps,
+                bgImg: results[0].bg_img,
+                isAdmin: results[0].isAdmin
               });
             } else {
               res.send({
@@ -123,5 +156,6 @@ module.exports = {
   signup,
   signin,
   google,
-  forgotPass
+  forgotPass,
+  login
 };

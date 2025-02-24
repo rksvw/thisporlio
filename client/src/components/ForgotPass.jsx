@@ -39,26 +39,30 @@ function ForgotPass() {
     console.log(newPass);
   };
   return (
-    <form id="Fpass" onSubmit={handleSubmit}>
-      <h1>New Pasword</h1>
-      <input
-        type="email"
-        name="email"
-        id="email"
-        placeholder="example@gmail.com"
-        onChange={handleChange}
-      />
-      <input
-        type="password"
-        name="newPassword"
-        id="newPassword"
-        placeholder="New password"
-        onChange={handleChange}
-      />
-      <button type="submit" id="FpBtn">
-        Login
-      </button>
-    </form>
+    <>
+      <div className="flex flex-col text-center items-center justify-center w-[440px] card">
+        <form id="Fpass" onSubmit={handleSubmit}>
+          <h1>New Pasword</h1>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="example@gmail.com"
+            onChange={handleChange}
+          />
+          <input
+            type="password"
+            name="newPassword"
+            id="newPassword"
+            placeholder="New password"
+            onChange={handleChange}
+          />
+          <button type="submit" id="FpBtn">
+            Login
+          </button>
+        </form>
+      </div>
+    </>
   );
 }
 
